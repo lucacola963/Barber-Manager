@@ -1,0 +1,1459 @@
+<!doctype html>
+<html lang="it">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <title>Barber Manager</title>
+
+    <style>
+
+        * {
+            box-sizing: border-box;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            margin: 0;
+            padding-bottom: 78px;
+            font-family: Arial, sans-serif;
+            background: #f4f5f7;
+            color: #111827;
+        }
+
+        button,
+        select,
+        input {
+            font-family: inherit;
+        }
+
+        /* =====================================================
+           HEADER
+           ===================================================== */
+
+        header {
+            background: #111827;
+            color: #fff;
+        }
+
+        .wrap,
+        main {
+            max-width: 700px;
+            margin: auto;
+        }
+
+        .wrap {
+            padding: 17px 20px;
+        }
+
+        .header-row {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 15px;
+        }
+
+        .logo {
+            font-size: 21px;
+            font-weight: 800;
+            letter-spacing: -0.3px;
+        }
+
+        .sub {
+            color: #cbd5e1;
+            font-size: 13px;
+            margin-top: 5px;
+        }
+
+        .header-date {
+            text-align: right;
+            color: #cbd5e1;
+            font-size: 12px;
+            white-space: nowrap;
+        }
+
+        /* =====================================================
+           MAIN
+           ===================================================== */
+
+        main {
+            padding: 16px 20px;
+        }
+
+        .card {
+            background: #fff;
+            padding: 18px;
+            border-radius: 17px;
+            margin-bottom: 14px;
+            box-shadow: 0 3px 18px #0000000d;
+        }
+
+        h1,
+        h2 {
+            margin-top: 0;
+        }
+
+        h1 {
+            font-size: 20px;
+            margin-bottom: 5px;
+        }
+
+        h2 {
+            font-size: 16px;
+            margin-bottom: 4px;
+        }
+
+        .desc {
+            color: #6b7280;
+            font-size: 13px;
+            margin: 0 0 17px 0;
+            line-height: 1.4;
+        }
+
+        /* =====================================================
+           DASHBOARD OGGI
+           ===================================================== */
+
+        .today {
+            background: #111827;
+            color: #fff;
+            padding: 18px;
+            border-radius: 17px;
+            margin-bottom: 14px;
+        }
+
+        .today-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 10px;
+        }
+
+        .today-title {
+            font-size: 11px;
+            font-weight: 800;
+            color: #cbd5e1;
+            letter-spacing: .5px;
+        }
+
+        .today-date {
+            font-size: 12px;
+            color: #cbd5e1;
+        }
+
+        .stats {
+            display: grid;
+            grid-template-columns: 1fr 1fr 1fr;
+            gap: 9px;
+            margin-top: 15px;
+        }
+
+        .stat {
+            background: #1f2937;
+            border-radius: 12px;
+            padding: 13px 11px;
+            min-width: 0;
+        }
+
+        .stat b {
+            display: block;
+            font-size: 23px;
+            line-height: 1.1;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        .stat span {
+            display: block;
+            color: #cbd5e1;
+            font-size: 11px;
+            margin-top: 5px;
+        }
+
+        /* =====================================================
+           REGISTRAZIONE SERVIZIO
+           ===================================================== */
+
+        .operator-select {
+            margin-bottom: 16px;
+        }
+
+        .field {
+            display: block;
+            font-weight: 700;
+            font-size: 13px;
+            margin-bottom: 7px;
+        }
+
+        select {
+            width: 100%;
+            padding: 13px;
+            border: 1px solid #d1d5db;
+            border-radius: 11px;
+            background: #fff;
+            font-size: 16px;
+            color: #111827;
+            outline: none;
+        }
+
+        select:focus {
+            border-color: #111827;
+        }
+
+        /* =====================================================
+           OPERATORE SELEZIONATO
+           ===================================================== */
+
+        .operator-box {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 12px;
+
+            padding: 12px 14px;
+            margin-bottom: 17px;
+
+            background: #f3f4f6;
+            border-radius: 12px;
+        }
+
+        .operator-label {
+            font-size: 10px;
+            color: #6b7280;
+            text-transform: uppercase;
+            font-weight: 800;
+            letter-spacing: .4px;
+        }
+
+        .operator-name {
+            font-size: 16px;
+            font-weight: 800;
+            margin-top: 3px;
+        }
+
+        .change-operator {
+            border: 1px solid #d1d5db;
+            background: #fff;
+            padding: 8px 11px;
+            border-radius: 9px;
+            font-size: 12px;
+            font-weight: 700;
+            cursor: pointer;
+            color: #111827;
+        }
+
+        .change-operator:active {
+            transform: scale(.97);
+        }
+
+        /* =====================================================
+           SERVIZI
+           ===================================================== */
+
+        .service-title-row {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 8px;
+        }
+
+        .service-hint {
+            color: #9ca3af;
+            font-size: 11px;
+        }
+
+        .grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 9px;
+        }
+
+        .opt {
+            position: relative;
+        }
+
+        .opt input {
+            position: absolute;
+            opacity: 0;
+            pointer-events: none;
+        }
+
+        .svc {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+
+            min-height: 78px;
+            padding: 13px;
+
+            border: 2px solid #e5e7eb;
+            border-radius: 13px;
+
+            cursor: pointer;
+
+            transition:
+                background .12s ease,
+                border-color .12s ease,
+                transform .08s ease;
+        }
+
+        .svc:active {
+            transform: scale(.98);
+        }
+
+        .svc b {
+            font-size: 14px;
+            margin-bottom: 6px;
+            line-height: 1.2;
+        }
+
+        .svc strong {
+            font-size: 16px;
+        }
+
+        .opt input:checked + .svc {
+            background: #eef2ff;
+            border-color: #111827;
+        }
+
+        /* =====================================================
+           PULSANTE REGISTRA
+           ===================================================== */
+
+        .btn {
+            width: 100%;
+            margin-top: 16px;
+            padding: 15px;
+
+            border: 0;
+            border-radius: 12px;
+
+            background: #111827;
+            color: #fff;
+
+            font-size: 15px;
+            font-weight: 800;
+
+            cursor: pointer;
+
+            transition:
+                transform .08s ease,
+                opacity .15s ease;
+        }
+
+        .btn:active {
+            transform: scale(.98);
+        }
+
+        .btn:disabled {
+            opacity: .6;
+            cursor: default;
+        }
+
+        /* =====================================================
+           MESSAGGIO REGISTRAZIONE
+           ===================================================== */
+
+        .success-message {
+            display: none;
+            margin-top: 10px;
+            padding: 10px 12px;
+            border-radius: 10px;
+            background: #ecfdf5;
+            color: #065f46;
+            font-size: 13px;
+            font-weight: 700;
+            text-align: center;
+        }
+
+        .success-message.show {
+            display: block;
+        }
+
+        /* =====================================================
+           OGGI PER OPERATORE
+           ===================================================== */
+
+        .section-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 10px;
+            margin-bottom: 5px;
+        }
+
+        .section-count {
+            color: #9ca3af;
+            font-size: 11px;
+        }
+
+        .operator {
+            padding: 12px 0;
+            border-bottom: 1px solid #eee;
+        }
+
+        .operator:last-child {
+            border-bottom: 0;
+            padding-bottom: 0;
+        }
+
+        .operator:first-child {
+            padding-top: 10px;
+        }
+
+        .operator-top {
+            display: flex;
+            justify-content: space-between;
+            gap: 10px;
+            align-items: center;
+        }
+
+        .operator-name-list {
+            font-size: 14px;
+        }
+
+        .operator-value {
+            font-weight: 800;
+            font-size: 14px;
+        }
+
+        .operator-meta {
+            margin-top: 4px;
+            color: #6b7280;
+            font-size: 11px;
+        }
+
+        /* =====================================================
+           ULTIME REGISTRAZIONI
+           ===================================================== */
+
+        .recent {
+            display: grid;
+            grid-template-columns: 45px 1fr auto;
+            gap: 9px;
+
+            align-items: center;
+
+            padding: 11px 0;
+            border-bottom: 1px solid #eee;
+        }
+
+        .recent:last-child {
+            border-bottom: 0;
+            padding-bottom: 0;
+        }
+
+        .recent:first-child {
+            padding-top: 10px;
+        }
+
+        .recent-time {
+            font-size: 11px;
+            color: #6b7280;
+        }
+
+        .recent-service {
+            font-weight: 700;
+            font-size: 13px;
+            line-height: 1.2;
+        }
+
+        .recent-person {
+            font-size: 11px;
+            color: #6b7280;
+            margin-top: 3px;
+        }
+
+        .recent-price {
+            font-weight: 800;
+            font-size: 13px;
+            white-space: nowrap;
+        }
+
+        .empty {
+            color: #6b7280;
+            font-size: 13px;
+            margin-bottom: 0;
+        }
+
+        /* =====================================================
+           NAVIGAZIONE
+           ===================================================== */
+
+        nav {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            right: 0;
+
+            display: flex;
+            justify-content: center;
+
+            background: rgba(255, 255, 255, .97);
+            border-top: 1px solid #e5e7eb;
+
+            z-index: 100;
+
+            padding-bottom: env(safe-area-inset-bottom);
+        }
+
+        .nav {
+            width: 105px;
+            padding: 9px 8px 8px;
+
+            text-align: center;
+            text-decoration: none;
+
+            color: #6b7280;
+
+            transition: color .12s ease;
+        }
+
+        .nav.active {
+            color: #111827;
+            font-weight: 700;
+        }
+
+        .nav-icon {
+            display: block;
+            font-size: 18px;
+            line-height: 20px;
+        }
+
+        .nav span {
+            display: block;
+            font-size: 10px;
+            margin-top: 2px;
+        }
+
+        /* =====================================================
+           MOBILE
+           ===================================================== */
+
+        @media (max-width: 520px) {
+
+            .wrap {
+                padding: 15px 16px;
+            }
+
+            main {
+                padding: 12px;
+            }
+
+            .logo {
+                font-size: 19px;
+            }
+
+            .sub {
+                font-size: 12px;
+            }
+
+            .header-date {
+                font-size: 11px;
+            }
+
+            .card {
+                padding: 16px;
+                border-radius: 15px;
+            }
+
+            .today {
+                padding: 16px;
+                border-radius: 15px;
+            }
+
+            .stats {
+                gap: 7px;
+            }
+
+            .stat {
+                padding: 12px 9px;
+            }
+
+            .stat b {
+                font-size: 20px;
+            }
+
+            .stat span {
+                font-size: 10px;
+            }
+
+            .nav {
+                flex: 1;
+                width: auto;
+            }
+        }
+
+        @media (max-width: 380px) {
+
+            .header-date {
+                display: none;
+            }
+
+            .grid {
+                grid-template-columns: 1fr;
+            }
+
+            .stats {
+                grid-template-columns: 1fr 1fr;
+            }
+
+            .stat:last-child {
+                grid-column: 1 / -1;
+            }
+
+            .stat:last-child b {
+                font-size: 22px;
+            }
+
+            .recent {
+                grid-template-columns: 42px 1fr auto;
+            }
+        }
+
+    </style>
+</head>
+
+
+<body>
+
+
+<!-- =========================================================
+     HEADER
+     ========================================================= -->
+
+<header>
+
+    <div class="wrap">
+
+        <div class="header-row">
+
+            <div>
+
+                <div class="logo">
+                    ✂️ Barber Manager
+                </div>
+
+                <div class="sub">
+                    Gestione semplice dei servizi
+                </div>
+
+            </div>
+
+            <div class="header-date" id="headerDate">
+            </div>
+
+        </div>
+
+    </div>
+
+</header>
+
+
+<main>
+
+
+    <!-- =====================================================
+         DASHBOARD OGGI
+         ===================================================== -->
+
+    <section class="today">
+
+        <div class="today-header">
+
+            <div class="today-title">
+                OGGI
+            </div>
+
+            <div class="today-date" id="todayDate">
+            </div>
+
+        </div>
+
+
+        <div class="stats">
+
+
+            <div class="stat">
+
+                <b>
+                    {{ statistiche['numero'] }}
+                </b>
+
+                <span>
+                    servizi
+                </span>
+
+            </div>
+
+
+            <div class="stat">
+
+                <b>
+                    € {{ '%.2f'|format(statistiche['totale']) }}
+                </b>
+
+                <span>
+                    valore
+                </span>
+
+            </div>
+
+
+            <div class="stat">
+
+                <b>
+                    € {{ '%.2f'|format(ticket_medio) }}
+                </b>
+
+                <span>
+                    ticket medio
+                </span>
+
+            </div>
+
+
+        </div>
+
+    </section>
+
+
+    <!-- =====================================================
+         REGISTRA SERVIZIO
+         ===================================================== -->
+
+    <section class="card">
+
+
+        <h1>
+            Registra servizio
+        </h1>
+
+
+        <p class="desc">
+            Scegli l'operatore e poi il servizio da registrare.
+        </p>
+
+
+        <!-- OPERATORE DA SELEZIONARE -->
+
+        <div
+            id="operatorSelection"
+            class="operator-select">
+
+            <label class="field">
+                Operatore
+            </label>
+
+
+            <select id="operatorSelect">
+
+                <option value="">
+                    Seleziona operatore
+                </option>
+
+
+                {% for c in collaboratori %}
+
+                    <option value="{{ c['id'] }}">
+                        {{ c['nome'] }}
+                    </option>
+
+                {% endfor %}
+
+
+            </select>
+
+        </div>
+
+
+        <!-- OPERATORE SELEZIONATO -->
+
+        <div
+            id="selectedOperator"
+            class="operator-box"
+            style="display:none">
+
+
+            <div>
+
+                <div class="operator-label">
+                    Operatore selezionato
+                </div>
+
+                <div
+                    id="selectedOperatorName"
+                    class="operator-name">
+                </div>
+
+            </div>
+
+
+            <button
+                type="button"
+                class="change-operator"
+                onclick="changeOperator()">
+
+                Cambia
+
+            </button>
+
+
+        </div>
+
+
+        <!-- FORM -->
+
+        <form
+            id="serviceForm"
+            action="/registra"
+            method="post">
+
+
+            <input
+                type="hidden"
+                name="collaboratore"
+                id="selectedOperatorId">
+
+
+            <div class="service-title-row">
+
+                <div class="field" style="margin-bottom:0;">
+                    Servizio
+                </div>
+
+                <div class="service-hint">
+                    Tocca per scegliere
+                </div>
+
+            </div>
+
+
+            <div class="grid">
+
+
+                {% for s in servizi %}
+
+                    <label class="opt">
+
+
+                        <input
+                            type="radio"
+                            name="servizio"
+                            value="{{ s['id'] }}"
+                            required>
+
+
+                        <span class="svc">
+
+                            <b>
+                                {{ s['nome'] }}
+                            </b>
+
+                            <strong>
+                                € {{ '%.2f'|format(s['prezzo']) }}
+                            </strong>
+
+                        </span>
+
+
+                    </label>
+
+                {% endfor %}
+
+
+            </div>
+
+
+            <button
+                id="submitButton"
+                class="btn"
+                type="submit">
+
+                ✓ REGISTRA SERVIZIO
+
+            </button>
+
+
+            <div
+                id="successMessage"
+                class="success-message">
+
+                ✓ Servizio registrato
+
+            </div>
+
+
+        </form>
+
+
+    </section>
+
+
+    <!-- =====================================================
+         OGGI PER OPERATORE
+         ===================================================== -->
+
+    <section class="card">
+
+
+        <div class="section-header">
+
+            <h2>
+                Oggi per operatore
+            </h2>
+
+        </div>
+
+
+        {% if per_operatore %}
+
+
+            {% for r in per_operatore %}
+
+
+                <div class="operator">
+
+
+                    <div class="operator-top">
+
+
+                        <b class="operator-name-list">
+                            {{ r['collaboratore_nome'] }}
+                        </b>
+
+
+                        <span class="operator-value">
+                            € {{ '%.2f'|format(r['totale']) }}
+                        </span>
+
+
+                    </div>
+
+
+                    <div class="operator-meta">
+
+                        {{ r['numero'] }}
+
+                        {% if r['numero'] == 1 %}
+
+                            servizio
+
+                        {% else %}
+
+                            servizi
+
+                        {% endif %}
+
+                    </div>
+
+
+                </div>
+
+
+            {% endfor %}
+
+
+        {% else %}
+
+
+            <p class="empty">
+                Nessun servizio registrato oggi.
+            </p>
+
+
+        {% endif %}
+
+
+    </section>
+
+
+    <!-- =====================================================
+         ULTIME REGISTRAZIONI
+         ===================================================== -->
+
+    <section class="card">
+
+
+        <div class="section-header">
+
+            <h2>
+                Ultime registrazioni
+            </h2>
+
+        </div>
+
+
+        {% if recenti %}
+
+
+            {% for r in recenti %}
+
+
+                <div class="recent">
+
+
+                    <div class="recent-time">
+
+                        {{ r['data_ora'][11:16] }}
+
+                    </div>
+
+
+                    <div>
+
+                        <div class="recent-service">
+
+                            {{ r['servizio_nome'] }}
+
+                        </div>
+
+
+                        <div class="recent-person">
+
+                            {{ r['collaboratore_nome'] }}
+
+                        </div>
+
+                    </div>
+
+
+                    <div class="recent-price">
+
+                        € {{ '%.2f'|format(r['prezzo_applicato']) }}
+
+                    </div>
+
+
+                </div>
+
+
+            {% endfor %}
+
+
+        {% else %}
+
+
+            <p class="empty">
+                Nessun servizio registrato.
+            </p>
+
+
+        {% endif %}
+
+
+    </section>
+
+
+</main>
+
+
+<!-- =========================================================
+     NAVIGAZIONE
+     ========================================================= -->
+
+<nav>
+
+
+    <a
+        class="nav active"
+        href="/">
+
+        <span class="nav-icon">
+            🏠
+        </span>
+
+        <span>
+            Home
+        </span>
+
+    </a>
+
+
+    <a
+        class="nav"
+        href="/storico">
+
+        <span class="nav-icon">
+            📊
+        </span>
+
+        <span>
+            Report
+        </span>
+
+    </a>
+
+
+    <a
+        class="nav"
+        href="/listino">
+
+        <span class="nav-icon">
+            💶
+        </span>
+
+        <span>
+            Listino
+        </span>
+
+    </a>
+
+
+    <a
+        class="nav"
+        href="/staff">
+
+        <span class="nav-icon">
+            👤
+        </span>
+
+        <span>
+            Staff
+        </span>
+
+    </a>
+
+
+</nav>
+
+
+<script>
+
+
+    /* =========================================================
+       OPERATORE MEMORIZZATO
+       ========================================================= */
+
+    const STORAGE_ID = "barber_operator_id";
+
+
+    const operatorSelection =
+        document.getElementById("operatorSelection");
+
+
+    const operatorSelect =
+        document.getElementById("operatorSelect");
+
+
+    const selectedOperator =
+        document.getElementById("selectedOperator");
+
+
+    const selectedOperatorId =
+        document.getElementById("selectedOperatorId");
+
+
+    const selectedOperatorName =
+        document.getElementById("selectedOperatorName");
+
+
+    const serviceForm =
+        document.getElementById("serviceForm");
+
+
+    const submitButton =
+        document.getElementById("submitButton");
+
+
+    const successMessage =
+        document.getElementById("successMessage");
+
+
+    /* =========================================================
+       IMPOSTA OPERATORE
+       ========================================================= */
+
+    function setOperator(id) {
+
+
+        const option =
+            operatorSelect.querySelector(
+                'option[value="' + id + '"]'
+            );
+
+
+        if (!option) {
+
+            clearOperator();
+
+            return;
+
+        }
+
+
+        selectedOperatorId.value = id;
+
+
+        selectedOperatorName.textContent =
+            option.textContent.trim();
+
+
+        operatorSelection.style.display =
+            "none";
+
+
+        selectedOperator.style.display =
+            "flex";
+
+
+        localStorage.setItem(
+            STORAGE_ID,
+            id
+        );
+
+    }
+
+
+    /* =========================================================
+       CANCELLA OPERATORE
+       ========================================================= */
+
+    function clearOperator() {
+
+
+        localStorage.removeItem(
+            STORAGE_ID
+        );
+
+
+        operatorSelect.value = "";
+
+
+        selectedOperatorId.value = "";
+
+
+        selectedOperatorName.textContent = "";
+
+
+        selectedOperator.style.display =
+            "none";
+
+
+        operatorSelection.style.display =
+            "block";
+
+    }
+
+
+    /* =========================================================
+       CAMBIA OPERATORE
+       ========================================================= */
+
+    function changeOperator() {
+
+        clearOperator();
+
+        operatorSelect.focus();
+
+    }
+
+
+    /* =========================================================
+       CAMBIO OPERATORE
+       ========================================================= */
+
+    operatorSelect.addEventListener(
+        "change",
+        function () {
+
+
+            if (this.value) {
+
+                setOperator(this.value);
+
+            }
+
+
+        }
+    );
+
+
+    /* =========================================================
+       RIPRISTINO OPERATORE SALVATO
+       ========================================================= */
+
+    document.addEventListener(
+        "DOMContentLoaded",
+        function () {
+
+
+            const savedId =
+                localStorage.getItem(
+                    STORAGE_ID
+                );
+
+
+            if (savedId) {
+
+                setOperator(savedId);
+
+            }
+
+
+            updateDates();
+
+        }
+    );
+
+
+    /* =========================================================
+       DATA
+       ========================================================= */
+
+    function updateDates() {
+
+
+        const now = new Date();
+
+
+        const options = {
+            weekday: "short",
+            day: "2-digit",
+            month: "2-digit"
+        };
+
+
+        const formatted =
+            now.toLocaleDateString(
+                "it-IT",
+                options
+            );
+
+
+        const headerDate =
+            document.getElementById(
+                "headerDate"
+            );
+
+
+        const todayDate =
+            document.getElementById(
+                "todayDate"
+            );
+
+
+        if (headerDate) {
+
+            headerDate.textContent =
+                formatted;
+
+        }
+
+
+        if (todayDate) {
+
+            todayDate.textContent =
+                formatted;
+
+        }
+
+    }
+
+
+    /* =========================================================
+       REGISTRAZIONE SERVIZIO
+       ========================================================= */
+
+    serviceForm.addEventListener(
+        "submit",
+        function () {
+
+
+            /*
+             * Controllo aggiuntivo:
+             * impedisce di inviare il modulo
+             * senza operatore.
+             */
+
+            if (!selectedOperatorId.value) {
+
+                alert(
+                    "Seleziona prima un operatore."
+                );
+
+                return;
+
+            }
+
+
+            /*
+             * Evita doppi click accidentali
+             * sul pulsante.
+             */
+
+            submitButton.disabled = true;
+
+
+            submitButton.textContent =
+                "Registrazione...";
+
+
+            /*
+             * Mostra un feedback visivo
+             * molto breve.
+             */
+
+            successMessage.classList.add(
+                "show"
+            );
+
+
+            /*
+             * L'operatore resta salvato.
+             *
+             * Il backend gestisce la registrazione
+             * e il successivo caricamento della pagina.
+             */
+
+        }
+    );
+
+
+    /* =========================================================
+       SELEZIONE SERVIZIO
+       ========================================================= */
+
+    const serviceInputs =
+        document.querySelectorAll(
+            'input[name="servizio"]'
+        );
+
+
+    serviceInputs.forEach(
+        function (service) {
+
+
+            service.addEventListener(
+                "change",
+                function () {
+
+
+                    /*
+                     * Rimuove eventuali
+                     * messaggi precedenti.
+                     */
+
+                    successMessage.classList.remove(
+                        "show"
+                    );
+
+
+                }
+            );
+
+
+        }
+    );
+
+
+</script>
+
+
+</body>
+</html>

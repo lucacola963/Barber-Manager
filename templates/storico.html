@@ -1,0 +1,1997 @@
+<!doctype html>
+<html lang="it">
+
+<head>
+
+    <meta charset="utf-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1"
+    >
+
+    <title>Report - Barber Manager</title>
+
+    <style>
+
+        * {
+            box-sizing: border-box;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            margin: 0;
+            padding-bottom: 82px;
+            font-family: Arial, sans-serif;
+            background: #f4f5f7;
+            color: #111827;
+        }
+
+        button,
+        input,
+        select {
+            font-family: inherit;
+        }
+
+        /* =====================================================
+           HEADER
+           ===================================================== */
+
+        header {
+            background: #111827;
+            color: #fff;
+        }
+
+        .wrap,
+        main {
+            max-width: 900px;
+            margin: auto;
+        }
+
+        .wrap {
+            padding: 17px 20px;
+        }
+
+        .header-row {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 15px;
+        }
+
+        .logo {
+            font-size: 21px;
+            font-weight: 800;
+        }
+
+        .sub {
+            margin-top: 5px;
+            color: #cbd5e1;
+            font-size: 13px;
+        }
+
+        .header-date {
+            color: #cbd5e1;
+            font-size: 12px;
+            text-align: right;
+            white-space: nowrap;
+        }
+
+        /* =====================================================
+           MAIN / CARD
+           ===================================================== */
+
+        main {
+            padding: 16px 20px;
+        }
+
+        .card {
+            background: #fff;
+            border-radius: 17px;
+            padding: 18px;
+            margin-bottom: 14px;
+            box-shadow: 0 3px 18px #0000000d;
+        }
+
+        h1,
+        h2 {
+            margin-top: 0;
+        }
+
+        h1 {
+            margin-bottom: 5px;
+            font-size: 20px;
+        }
+
+        h2 {
+            margin-bottom: 5px;
+            font-size: 16px;
+        }
+
+        .desc {
+            margin: 0 0 17px;
+            color: #6b7280;
+            font-size: 13px;
+            line-height: 1.4;
+        }
+
+        /* =====================================================
+           FILTRI
+           ===================================================== */
+
+        .filters {
+            display: grid;
+            grid-template-columns:
+                1fr
+                1fr
+                1fr
+                1fr
+                auto;
+            gap: 9px;
+            align-items: end;
+        }
+
+        .field {
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+        }
+
+        .field label {
+            font-size: 11px;
+            font-weight: 800;
+            color: #6b7280;
+            text-transform: uppercase;
+        }
+
+        input,
+        select {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid #d1d5db;
+            border-radius: 10px;
+            background: #fff;
+            font-size: 14px;
+            color: #111827;
+            outline: none;
+        }
+
+        input:focus,
+        select:focus {
+            border-color: #111827;
+        }
+
+        .apply {
+            min-height: 43px;
+            padding: 11px 18px;
+            border: 0;
+            border-radius: 10px;
+            background: #111827;
+            color: #fff;
+            font-size: 12px;
+            font-weight: 800;
+            cursor: pointer;
+        }
+
+        .apply:active {
+            transform: scale(.98);
+        }
+
+        /* =====================================================
+           PERIODO SELEZIONATO
+           ===================================================== */
+
+        .period-box {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 12px;
+            margin-top: 15px;
+            padding: 11px 13px;
+            border-radius: 11px;
+            background: #f3f4f6;
+        }
+
+        .period-label {
+            color: #6b7280;
+            font-size: 10px;
+            font-weight: 800;
+            text-transform: uppercase;
+        }
+
+        .period-value {
+            margin-top: 3px;
+            font-size: 13px;
+            font-weight: 700;
+        }
+
+        .period-icon {
+            font-size: 20px;
+        }
+
+        /* =====================================================
+           QUICK FILTER
+           ===================================================== */
+
+        .quick-filters {
+            display: flex;
+            gap: 6px;
+            margin-top: 13px;
+        }
+
+        .quick-filter {
+            flex: 1;
+            padding: 9px 8px;
+            border: 1px solid #d1d5db;
+            border-radius: 9px;
+            background: #fff;
+            color: #374151;
+            font-size: 11px;
+            font-weight: 700;
+            cursor: pointer;
+        }
+
+        .quick-filter:hover {
+            background: #f9fafb;
+        }
+
+        /* =====================================================
+           KPI
+           ===================================================== */
+
+        .kpis {
+            display: grid;
+            grid-template-columns:
+                1fr
+                1fr
+                1fr;
+            gap: 9px;
+        }
+
+        .kpi {
+            padding: 15px;
+            border-radius: 13px;
+            background: #f3f4f6;
+        }
+
+        .kpi-label {
+            color: #6b7280;
+            font-size: 10px;
+            font-weight: 800;
+            text-transform: uppercase;
+            letter-spacing: .3px;
+        }
+
+        .kpi-value {
+            margin-top: 6px;
+            font-size: 24px;
+            font-weight: 800;
+            line-height: 1.1;
+        }
+
+        .comparison {
+            margin-top: 6px;
+            font-size: 10px;
+            color: #6b7280;
+        }
+
+        /* =====================================================
+           TITOLI SEZIONE
+           ===================================================== */
+
+        .section-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 10px;
+            margin-bottom: 12px;
+        }
+
+        .section-title {
+            margin: 0;
+            font-size: 16px;
+        }
+
+        .section-subtitle {
+            color: #9ca3af;
+            font-size: 11px;
+        }
+
+        /* =====================================================
+           GRAFICO
+           ===================================================== */
+
+        .chart-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 10px;
+            margin-bottom: 13px;
+        }
+
+        .chart-buttons {
+            display: flex;
+            gap: 5px;
+        }
+
+        .chart-button {
+            border: 1px solid #d1d5db;
+            background: #fff;
+            padding: 7px 10px;
+            border-radius: 8px;
+            font-size: 10px;
+            font-weight: 700;
+            cursor: pointer;
+            color: #374151;
+        }
+
+        .chart-button:hover {
+            background: #f9fafb;
+        }
+
+        .chart-button.active {
+            background: #111827;
+            color: #fff;
+            border-color: #111827;
+        }
+
+        .chart-container {
+            width: 100%;
+            overflow: hidden;
+        }
+
+        svg {
+            display: block;
+            width: 100%;
+            height: 230px;
+        }
+
+        .chart-line {
+            fill: none;
+            stroke: #111827;
+            stroke-width: 3;
+            stroke-linecap: round;
+            stroke-linejoin: round;
+        }
+
+        .chart-point {
+            fill: #fff;
+            stroke: #111827;
+            stroke-width: 2;
+        }
+
+        .chart-grid {
+            stroke: #e5e7eb;
+            stroke-width: 1;
+        }
+
+        .chart-label {
+            fill: #6b7280;
+            font-size: 10px;
+        }
+
+        .chart-empty {
+            height: 210px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #9ca3af;
+            font-size: 13px;
+            text-align: center;
+        }
+
+        /* =====================================================
+           TABELLE
+           ===================================================== */
+
+        .table-wrapper {
+            overflow-x: auto;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        th {
+            padding: 9px 7px;
+            text-align: left;
+            font-size: 10px;
+            color: #6b7280;
+            text-transform: uppercase;
+            border-bottom: 1px solid #e5e7eb;
+            white-space: nowrap;
+        }
+
+        td {
+            padding: 11px 7px;
+            font-size: 13px;
+            border-bottom: 1px solid #f0f0f0;
+        }
+
+        tbody tr:last-child td {
+            border-bottom: 0;
+        }
+
+        .number {
+            text-align: right;
+            white-space: nowrap;
+        }
+
+        .main-value {
+            font-weight: 800;
+        }
+
+        .secondary {
+            display: block;
+            margin-top: 3px;
+            color: #9ca3af;
+            font-size: 10px;
+        }
+
+        /* =====================================================
+           DETTAGLIO
+           ===================================================== */
+
+        details summary {
+            cursor: pointer;
+            font-weight: 700;
+            color: #111827;
+            font-size: 14px;
+        }
+
+        details summary::marker {
+            color: #6b7280;
+        }
+
+        .detail-table {
+            margin-top: 15px;
+        }
+
+        .empty {
+            color: #6b7280;
+            font-size: 13px;
+            margin: 0;
+        }
+
+        /* =====================================================
+           NAVIGAZIONE
+           ===================================================== */
+
+        nav {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            display: flex;
+            justify-content: center;
+            background: rgba(255, 255, 255, .97);
+            border-top: 1px solid #e5e7eb;
+            z-index: 100;
+            padding-bottom: env(safe-area-inset-bottom);
+        }
+
+        .nav {
+            width: 105px;
+            padding: 9px 8px 8px;
+            text-align: center;
+            text-decoration: none;
+            color: #6b7280;
+        }
+
+        .nav.active {
+            color: #111827;
+            font-weight: 700;
+        }
+
+        .nav-icon {
+            display: block;
+            font-size: 18px;
+            line-height: 20px;
+        }
+
+        .nav span:last-child {
+            display: block;
+            margin-top: 2px;
+            font-size: 10px;
+        }
+
+        /* =====================================================
+           MOBILE
+           ===================================================== */
+
+        @media (max-width: 700px) {
+
+            .wrap,
+            main {
+                padding-left: 12px;
+                padding-right: 12px;
+            }
+
+            .filters {
+                grid-template-columns:
+                    1fr
+                    1fr;
+            }
+
+            .filters .field:nth-child(3),
+            .filters .field:nth-child(4),
+            .filters .apply {
+                grid-column: 1 / -1;
+            }
+
+            .kpis {
+                grid-template-columns:
+                    1fr
+                    1fr;
+            }
+
+            .kpi:last-child {
+                grid-column: 1 / -1;
+            }
+
+            .chart-header {
+                align-items: flex-start;
+                flex-direction: column;
+            }
+
+            .chart-buttons {
+                width: 100%;
+            }
+
+            .chart-button {
+                flex: 1;
+            }
+
+            .nav {
+                flex: 1;
+            }
+        }
+
+        @media (max-width: 420px) {
+
+            .header-date {
+                display: none;
+            }
+
+            .filters {
+                grid-template-columns: 1fr;
+            }
+
+            .filters .field:nth-child(3),
+            .filters .field:nth-child(4),
+            .filters .apply {
+                grid-column: auto;
+            }
+
+            .kpis {
+                grid-template-columns: 1fr;
+            }
+
+            .kpi:last-child {
+                grid-column: auto;
+            }
+
+            .quick-filters {
+                flex-wrap: wrap;
+            }
+
+            .quick-filter {
+                min-width: 30%;
+            }
+
+            .period-box {
+                align-items: flex-start;
+            }
+        }
+
+    </style>
+
+</head>
+
+
+<body>
+
+
+<header>
+
+    <div class="wrap">
+
+        <div class="header-row">
+
+            <div>
+
+                <div class="logo">
+                    ✂️ Barber Manager
+                </div>
+
+                <div class="sub">
+                    Report e andamento
+                </div>
+
+            </div>
+
+            <div
+                id="headerDate"
+                class="header-date"
+            ></div>
+
+        </div>
+
+    </div>
+
+</header>
+
+
+<main>
+
+
+    <!-- =====================================================
+         FILTRI
+         ===================================================== -->
+
+    <section class="card">
+
+        <h1>
+            Report
+        </h1>
+
+        <p class="desc">
+            Analizza servizi, valore e andamento
+            nel periodo selezionato.
+        </p>
+
+
+        <form
+            method="get"
+            action="/storico"
+            class="filters"
+            id="reportForm"
+        >
+
+            <!-- DAL -->
+
+            <div class="field">
+
+                <label for="dal">
+                    Dal
+                </label>
+
+                <input
+                    id="dal"
+                    type="date"
+                    name="dal"
+                    value="{{ dal }}"
+                >
+
+            </div>
+
+
+            <!-- AL -->
+
+            <div class="field">
+
+                <label for="al">
+                    Al
+                </label>
+
+                <input
+                    id="al"
+                    type="date"
+                    name="al"
+                    value="{{ al }}"
+                >
+
+            </div>
+
+
+            <!-- OPERATORE -->
+
+            <div class="field">
+
+                <label for="operatore">
+                    Operatore
+                </label>
+
+                <select
+                    id="operatore"
+                    name="operatore"
+                >
+
+                    <option value="">
+                        Tutti gli operatori
+                    </option>
+
+                    {% for c in collaboratori %}
+
+                        <option
+                            value="{{ c['id'] }}"
+                            {% if operatore|string == c['id']|string %}
+                                selected
+                            {% endif %}
+                        >
+                            {{ c['nome'] }}
+                        </option>
+
+                    {% endfor %}
+
+                </select>
+
+            </div>
+
+
+            <!-- SERVIZIO -->
+
+            <div class="field">
+
+                <label for="servizio">
+                    Servizio
+                </label>
+
+                <select
+                    id="servizio"
+                    name="servizio"
+                >
+
+                    <option value="">
+                        Tutti i servizi
+                    </option>
+
+                    {% for s in servizi %}
+
+                        <option
+                            value="{{ s['id'] }}"
+                            {% if servizio|string == s['id']|string %}
+                                selected
+                            {% endif %}
+                        >
+                            {{ s['nome'] }}
+                        </option>
+
+                    {% endfor %}
+
+                </select>
+
+            </div>
+
+
+            <!-- APPLICA -->
+
+            <button
+                class="apply"
+                type="submit"
+            >
+                APPLICA
+            </button>
+
+        </form>
+
+
+        <!-- PERIODO -->
+
+        <div class="period-box">
+
+            <div>
+
+                <div class="period-label">
+                    Periodo analizzato
+                </div>
+
+                <div
+                    id="periodValue"
+                    class="period-value"
+                >
+                    {{ dal }} → {{ al }}
+                </div>
+
+            </div>
+
+            <div class="period-icon">
+                📅
+            </div>
+
+        </div>
+
+
+        <!-- FILTRI RAPIDI -->
+
+        <div class="quick-filters">
+
+            <button
+                type="button"
+                class="quick-filter"
+                data-period="today"
+            >
+                Oggi
+            </button>
+
+            <button
+                type="button"
+                class="quick-filter"
+                data-period="7"
+            >
+                7 giorni
+            </button>
+
+            <button
+                type="button"
+                class="quick-filter"
+                data-period="30"
+            >
+                30 giorni
+            </button>
+
+        </div>
+
+    </section>
+
+
+    <!-- =====================================================
+         KPI
+         ===================================================== -->
+
+    <section class="card">
+
+        <div class="kpis">
+
+
+            <!-- SERVIZI -->
+
+            <div class="kpi">
+
+                <div class="kpi-label">
+                    Servizi
+                </div>
+
+                <div class="kpi-value">
+                    {{ riepilogo['numero'] }}
+                </div>
+
+                {% if variazione_servizi is not none %}
+
+                    <div class="comparison">
+                        {{ '%+.1f'|format(variazione_servizi) }}%
+                        vs periodo precedente
+                    </div>
+
+                {% endif %}
+
+            </div>
+
+
+            <!-- VALORE -->
+
+            <div class="kpi">
+
+                <div class="kpi-label">
+                    Valore
+                </div>
+
+                <div class="kpi-value">
+                    € {{ '%.2f'|format(riepilogo['totale']) }}
+                </div>
+
+                {% if variazione_valore is not none %}
+
+                    <div class="comparison">
+                        {{ '%+.1f'|format(variazione_valore) }}%
+                        vs periodo precedente
+                    </div>
+
+                {% endif %}
+
+            </div>
+
+
+            <!-- TICKET -->
+
+            <div class="kpi">
+
+                <div class="kpi-label">
+                    Ticket medio
+                </div>
+
+                <div class="kpi-value">
+                    € {{ '%.2f'|format(ticket_medio) }}
+                </div>
+
+            </div>
+
+        </div>
+
+    </section>
+
+
+    <!-- =====================================================
+         GRAFICO
+         ===================================================== -->
+
+    <section class="card">
+
+
+        <div class="chart-header">
+
+            <div>
+
+                <h2 class="section-title">
+                    Andamento valore
+                </h2>
+
+                <div class="section-subtitle">
+                    Valore dei servizi nel tempo
+                </div>
+
+            </div>
+
+
+            <div class="chart-buttons">
+
+                <button
+                    type="button"
+                    class="chart-button active"
+                    data-mode="giorno"
+                >
+                    Giorno
+                </button>
+
+                <button
+                    type="button"
+                    class="chart-button"
+                    data-mode="settimana"
+                >
+                    Settimana
+                </button>
+
+                <button
+                    type="button"
+                    class="chart-button"
+                    data-mode="mese"
+                >
+                    Mese
+                </button>
+
+            </div>
+
+        </div>
+
+
+        <div class="chart-container">
+
+            <svg
+                id="trendChart"
+                viewBox="0 0 800 230"
+                preserveAspectRatio="none"
+            >
+
+                <g id="grid"></g>
+
+                <polyline
+                    id="trendLine"
+                    class="chart-line"
+                    points=""
+                ></polyline>
+
+                <g id="points"></g>
+
+                <g id="labels"></g>
+
+            </svg>
+
+
+            <div
+                id="chartEmpty"
+                class="chart-empty"
+                style="display: none;"
+            >
+                Nessun dato disponibile
+                nel periodo selezionato.
+            </div>
+
+        </div>
+
+    </section>
+
+
+    <!-- =====================================================
+         PERFORMANCE OPERATORI
+         ===================================================== -->
+
+    <section class="card">
+
+
+        <div class="section-header">
+
+            <div>
+
+                <h2 class="section-title">
+                    Performance operatori
+                </h2>
+
+                <div class="section-subtitle">
+                    Servizi e valore generato
+                </div>
+
+            </div>
+
+        </div>
+
+
+        {% if per_operatore %}
+
+            <div class="table-wrapper">
+
+                <table>
+
+                    <thead>
+
+                        <tr>
+
+                            <th>
+                                Operatore
+                            </th>
+
+                            <th class="number">
+                                Servizi
+                            </th>
+
+                            <th class="number">
+                                Valore
+                            </th>
+
+                            <th class="number">
+                                Ticket
+                            </th>
+
+                        </tr>
+
+                    </thead>
+
+
+                    <tbody>
+
+                        {% for r in per_operatore %}
+
+                            <tr>
+
+                                <td class="main-value">
+                                    {{ r['collaboratore_nome'] }}
+                                </td>
+
+                                <td class="number">
+                                    {{ r['numero'] }}
+                                </td>
+
+                                <td class="number">
+                                    € {{ '%.2f'|format(r['totale']) }}
+                                </td>
+
+                                <td class="number">
+
+                                    {% if r['numero'] > 0 %}
+
+                                        € {{ '%.2f'|format(
+                                            r['totale'] / r['numero']
+                                        ) }}
+
+                                    {% else %}
+
+                                        € 0,00
+
+                                    {% endif %}
+
+                                </td>
+
+                            </tr>
+
+                        {% endfor %}
+
+                    </tbody>
+
+                </table>
+
+            </div>
+
+        {% else %}
+
+            <p class="empty">
+                Nessun dato disponibile
+                nel periodo selezionato.
+            </p>
+
+        {% endif %}
+
+    </section>
+
+
+    <!-- =====================================================
+         PERFORMANCE SERVIZI
+         ===================================================== -->
+
+    <section class="card">
+
+
+        <div class="section-header">
+
+            <div>
+
+                <h2 class="section-title">
+                    Performance servizi
+                </h2>
+
+                <div class="section-subtitle">
+                    Quantità e valore per servizio
+                </div>
+
+            </div>
+
+        </div>
+
+
+        {% if per_servizio %}
+
+            <div class="table-wrapper">
+
+                <table>
+
+                    <thead>
+
+                        <tr>
+
+                            <th>
+                                Servizio
+                            </th>
+
+                            <th class="number">
+                                Quantità
+                            </th>
+
+                            <th class="number">
+                                Valore
+                            </th>
+
+                        </tr>
+
+                    </thead>
+
+
+                    <tbody>
+
+                        {% for r in per_servizio %}
+
+                            <tr>
+
+                                <td class="main-value">
+                                    {{ r['servizio_nome'] }}
+                                </td>
+
+                                <td class="number">
+                                    {{ r['numero'] }}
+                                </td>
+
+                                <td class="number">
+                                    € {{ '%.2f'|format(r['totale']) }}
+                                </td>
+
+                            </tr>
+
+                        {% endfor %}
+
+                    </tbody>
+
+                </table>
+
+            </div>
+
+        {% else %}
+
+            <p class="empty">
+                Nessun dato disponibile
+                nel periodo selezionato.
+            </p>
+
+        {% endif %}
+
+    </section>
+
+
+    <!-- =====================================================
+         DETTAGLIO REGISTRAZIONI
+         ===================================================== -->
+
+    <section class="card">
+
+        <details>
+
+            <summary>
+                Mostra dettaglio registrazioni
+            </summary>
+
+
+            {% if dettagli %}
+
+                <div class="table-wrapper detail-table">
+
+                    <table>
+
+                        <thead>
+
+                            <tr>
+
+                                <th>
+                                    Data
+                                </th>
+
+                                <th>
+                                    Operatore
+                                </th>
+
+                                <th>
+                                    Servizio
+                                </th>
+
+                                <th class="number">
+                                    Valore
+                                </th>
+
+                            </tr>
+
+                        </thead>
+
+
+                        <tbody>
+
+                            {% for r in dettagli %}
+
+                                <tr>
+
+                                    <td>
+                                        {{ r['data_ora'] }}
+                                    </td>
+
+                                    <td>
+                                        {{ r['collaboratore_nome'] }}
+                                    </td>
+
+                                    <td>
+                                        {{ r['servizio_nome'] }}
+                                    </td>
+
+                                    <td class="number">
+                                        € {{ '%.2f'|format(
+                                            r['prezzo_applicato']
+                                        ) }}
+                                    </td>
+
+                                </tr>
+
+                            {% endfor %}
+
+                        </tbody>
+
+                    </table>
+
+                </div>
+
+            {% else %}
+
+                <p class="empty detail-table">
+                    Nessuna registrazione
+                    nel periodo selezionato.
+                </p>
+
+            {% endif %}
+
+        </details>
+
+    </section>
+
+
+</main>
+
+
+<!-- =========================================================
+     NAVIGAZIONE
+     ========================================================= -->
+
+<nav>
+
+    <a
+        class="nav"
+        href="/"
+    >
+
+        <span class="nav-icon">
+            🏠
+        </span>
+
+        <span>
+            Home
+        </span>
+
+    </a>
+
+
+    <a
+        class="nav active"
+        href="/storico"
+    >
+
+        <span class="nav-icon">
+            📊
+        </span>
+
+        <span>
+            Report
+        </span>
+
+    </a>
+
+
+    <a
+        class="nav"
+        href="/listino"
+    >
+
+        <span class="nav-icon">
+            💶
+        </span>
+
+        <span>
+            Listino
+        </span>
+
+    </a>
+
+
+    <a
+        class="nav"
+        href="/staff"
+    >
+
+        <span class="nav-icon">
+            👤
+        </span>
+
+        <span>
+            Staff
+        </span>
+
+    </a>
+
+</nav>
+
+
+<script>
+
+    /* =========================================================
+       DATA HEADER
+       ========================================================= */
+
+    function updateHeaderDate() {
+
+        const element =
+            document.getElementById("headerDate");
+
+        if (!element) {
+            return;
+        }
+
+        const now = new Date();
+
+        element.textContent =
+            now.toLocaleDateString(
+                "it-IT",
+                {
+                    weekday: "short",
+                    day: "2-digit",
+                    month: "2-digit"
+                }
+            );
+    }
+
+
+    updateHeaderDate();
+
+
+    /* =========================================================
+       DATI GRAFICO
+       ========================================================= */
+
+    const chartData = {
+
+        giorno:
+            {{ andamento_giornaliero | tojson }},
+
+        settimana:
+            {{ andamento_settimanale | tojson }},
+
+        mese:
+            {{ andamento_mensile | tojson }}
+
+    };
+
+
+    /* =========================================================
+       ELEMENTI GRAFICO
+       ========================================================= */
+
+    const svg =
+        document.getElementById("trendChart");
+
+    const line =
+        document.getElementById("trendLine");
+
+    const pointsGroup =
+        document.getElementById("points");
+
+    const labelsGroup =
+        document.getElementById("labels");
+
+    const gridGroup =
+        document.getElementById("grid");
+
+    const empty =
+        document.getElementById("chartEmpty");
+
+
+    /* =========================================================
+       DISEGNA GRAFICO
+       ========================================================= */
+
+    function drawChart(mode) {
+
+        const data =
+            Array.isArray(chartData[mode])
+                ? chartData[mode]
+                : [];
+
+
+        pointsGroup.innerHTML = "";
+        labelsGroup.innerHTML = "";
+        gridGroup.innerHTML = "";
+
+        line.setAttribute(
+            "points",
+            ""
+        );
+
+
+        /* -----------------------------------------------------
+           NESSUN DATO
+           ----------------------------------------------------- */
+
+        if (!data.length) {
+
+            svg.style.display = "none";
+
+            empty.style.display = "flex";
+
+            return;
+        }
+
+
+        svg.style.display = "block";
+
+        empty.style.display = "none";
+
+
+        /* -----------------------------------------------------
+           DIMENSIONI
+           ----------------------------------------------------- */
+
+        const width = 800;
+        const height = 230;
+
+        const paddingLeft = 30;
+        const paddingRight = 20;
+        const paddingTop = 20;
+        const paddingBottom = 35;
+
+        const chartWidth =
+            width -
+            paddingLeft -
+            paddingRight;
+
+        const chartHeight =
+            height -
+            paddingTop -
+            paddingBottom;
+
+
+        /* -----------------------------------------------------
+           VALORI
+           ----------------------------------------------------- */
+
+        const values =
+            data.map(
+                function(item) {
+
+                    return Number(
+                        item.totale || 0
+                    );
+
+                }
+            );
+
+
+        const maxValue =
+            Math.max(
+                ...values,
+                1
+            );
+
+
+        /* -----------------------------------------------------
+           GRIGLIA
+           ----------------------------------------------------- */
+
+        for (
+            let i = 0;
+            i <= 4;
+            i++
+        ) {
+
+            const y =
+                paddingTop +
+                (
+                    chartHeight *
+                    i /
+                    4
+                );
+
+
+            const gridLine =
+                document.createElementNS(
+                    "http://www.w3.org/2000/svg",
+                    "line"
+                );
+
+
+            gridLine.setAttribute(
+                "x1",
+                paddingLeft
+            );
+
+            gridLine.setAttribute(
+                "x2",
+                width - paddingRight
+            );
+
+            gridLine.setAttribute(
+                "y1",
+                y
+            );
+
+            gridLine.setAttribute(
+                "y2",
+                y
+            );
+
+            gridLine.setAttribute(
+                "class",
+                "chart-grid"
+            );
+
+
+            gridGroup.appendChild(
+                gridLine
+            );
+
+        }
+
+
+        /* -----------------------------------------------------
+           COORDINATE
+           ----------------------------------------------------- */
+
+        const coordinates =
+            data.map(
+                function(item, index) {
+
+                    let x;
+
+
+                    if (data.length === 1) {
+
+                        x =
+                            paddingLeft +
+                            chartWidth / 2;
+
+                    } else {
+
+                        x =
+                            paddingLeft +
+                            (
+                                chartWidth *
+                                index /
+                                (data.length - 1)
+                            );
+
+                    }
+
+
+                    const value =
+                        Number(
+                            item.totale || 0
+                        );
+
+
+                    const y =
+                        paddingTop +
+                        chartHeight -
+                        (
+                            value /
+                            maxValue *
+                            chartHeight
+                        );
+
+
+                    return {
+                        x: x,
+                        y: y,
+                        value: value,
+                        item: item
+                    };
+
+                }
+            );
+
+
+        /* -----------------------------------------------------
+           LINEA
+           ----------------------------------------------------- */
+
+        line.setAttribute(
+            "points",
+            coordinates
+                .map(
+                    function(point) {
+
+                        return (
+                            point.x +
+                            "," +
+                            point.y
+                        );
+
+                    }
+                )
+                .join(" ")
+        );
+
+
+        /* -----------------------------------------------------
+           PUNTI
+           ----------------------------------------------------- */
+
+        coordinates.forEach(
+            function(point) {
+
+                const circle =
+                    document.createElementNS(
+                        "http://www.w3.org/2000/svg",
+                        "circle"
+                    );
+
+
+                circle.setAttribute(
+                    "cx",
+                    point.x
+                );
+
+                circle.setAttribute(
+                    "cy",
+                    point.y
+                );
+
+                circle.setAttribute(
+                    "r",
+                    4
+                );
+
+                circle.setAttribute(
+                    "class",
+                    "chart-point"
+                );
+
+
+                pointsGroup.appendChild(
+                    circle
+                );
+
+            }
+        );
+
+
+        /* -----------------------------------------------------
+           ETICHETTE ASSE X
+           ----------------------------------------------------- */
+
+        const maxLabels = 7;
+
+        const step =
+            Math.max(
+                1,
+                Math.ceil(
+                    data.length /
+                    maxLabels
+                )
+            );
+
+
+        data.forEach(
+            function(item, index) {
+
+                if (
+                    index % step !== 0 &&
+                    index !== data.length - 1
+                ) {
+                    return;
+                }
+
+
+                const point =
+                    coordinates[index];
+
+
+                const text =
+                    document.createElementNS(
+                        "http://www.w3.org/2000/svg",
+                        "text"
+                    );
+
+
+                let label =
+                    item.periodo ||
+                    item.giorno ||
+                    "";
+
+
+                /* -------------------------------------------------
+                   FORMATO GIORNO
+                   ------------------------------------------------- */
+
+                if (
+                    mode === "giorno" &&
+                    label.length >= 10
+                ) {
+
+                    label =
+                        label.substring(8, 10) +
+                        "/" +
+                        label.substring(5, 7);
+
+                }
+
+
+                /* -------------------------------------------------
+                   FORMATO SETTIMANA
+                   ------------------------------------------------- */
+
+                if (
+                    mode === "settimana" &&
+                    label.length >= 10
+                ) {
+
+                    label =
+                        label.substring(8, 10) +
+                        "/" +
+                        label.substring(5, 7);
+
+                }
+
+
+                /* -------------------------------------------------
+                   FORMATO MESE
+                   ------------------------------------------------- */
+
+                if (
+                    mode === "mese" &&
+                    label.length >= 7
+                ) {
+
+                    label =
+                        label.substring(5, 7) +
+                        "/" +
+                        label.substring(0, 4);
+
+                }
+
+
+                text.setAttribute(
+                    "x",
+                    point.x
+                );
+
+                text.setAttribute(
+                    "y",
+                    height - 10
+                );
+
+                text.setAttribute(
+                    "text-anchor",
+                    "middle"
+                );
+
+                text.setAttribute(
+                    "class",
+                    "chart-label"
+                );
+
+
+                text.textContent =
+                    label;
+
+
+                labelsGroup.appendChild(
+                    text
+                );
+
+            }
+        );
+
+    }
+
+
+    /* =========================================================
+       PULSANTI GRAFICO
+       ========================================================= */
+
+    document
+        .querySelectorAll(".chart-button")
+        .forEach(
+            function(button) {
+
+                button.addEventListener(
+                    "click",
+                    function() {
+
+                        document
+                            .querySelectorAll(
+                                ".chart-button"
+                            )
+                            .forEach(
+                                function(btn) {
+
+                                    btn.classList.remove(
+                                        "active"
+                                    );
+
+                                }
+                            );
+
+
+                        this.classList.add(
+                            "active"
+                        );
+
+
+                        drawChart(
+                            this.dataset.mode
+                        );
+
+                    }
+                );
+
+            }
+        );
+
+
+    /* =========================================================
+       FILTRI RAPIDI
+       ========================================================= */
+
+    document
+        .querySelectorAll(".quick-filter")
+        .forEach(
+            function(button) {
+
+                button.addEventListener(
+                    "click",
+                    function() {
+
+                        const period =
+                            this.dataset.period;
+
+
+                        const today =
+                            new Date();
+
+
+                        const start =
+                            new Date();
+
+
+                        if (
+                            period === "today"
+                        ) {
+
+                            start.setTime(
+                                today.getTime()
+                            );
+
+                        } else {
+
+                            start.setDate(
+                                today.getDate() -
+                                (
+                                    Number(period) - 1
+                                )
+                            );
+
+                        }
+
+
+                        const formatDate =
+                            function(date) {
+
+                                const year =
+                                    date.getFullYear();
+
+
+                                const month =
+                                    String(
+                                        date.getMonth() + 1
+                                    ).padStart(
+                                        2,
+                                        "0"
+                                    );
+
+
+                                const day =
+                                    String(
+                                        date.getDate()
+                                    ).padStart(
+                                        2,
+                                        "0"
+                                    );
+
+
+                                return (
+                                    year +
+                                    "-" +
+                                    month +
+                                    "-" +
+                                    day
+                                );
+
+                            };
+
+
+                        document.getElementById(
+                            "dal"
+                        ).value =
+                            formatDate(start);
+
+
+                        document.getElementById(
+                            "al"
+                        ).value =
+                            formatDate(today);
+
+
+                        document.getElementById(
+                            "reportForm"
+                        ).submit();
+
+                    }
+                );
+
+            }
+        );
+
+
+    /* =========================================================
+       GRAFICO INIZIALE
+       ========================================================= */
+
+    drawChart("giorno");
+
+</script>
+
+
+</body>
+
+</html>

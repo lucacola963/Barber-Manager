@@ -1,0 +1,679 @@
+<!doctype html>
+<html lang="it">
+
+<head>
+
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <title>Listino - Barber Manager</title>
+
+    <style>
+
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            padding-bottom: 82px;
+            font-family: Arial, sans-serif;
+            background: #f4f5f7;
+            color: #111827;
+        }
+
+        /* =========================
+           HEADER
+        ========================= */
+
+        header {
+            background: #111827;
+            color: #ffffff;
+        }
+
+        .wrap,
+        main {
+            max-width: 700px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        .logo {
+            font-size: 22px;
+            font-weight: 800;
+            letter-spacing: -0.3px;
+        }
+
+        .sub {
+            margin-top: 6px;
+            color: #cbd5e1;
+            font-size: 14px;
+        }
+
+
+        /* =========================
+           CARD
+        ========================= */
+
+        .card {
+            background: #ffffff;
+            border-radius: 20px;
+            padding: 22px;
+            margin-bottom: 16px;
+            box-shadow: 0 3px 18px rgba(0, 0, 0, 0.05);
+        }
+
+        h1 {
+            margin: 0 0 6px;
+            font-size: 24px;
+        }
+
+        h2 {
+            margin: 0;
+            font-size: 18px;
+        }
+
+        .desc {
+            margin: 0;
+            color: #6b7280;
+            font-size: 14px;
+            line-height: 1.5;
+        }
+
+
+        /* =========================
+           AGGIUNTA SERVIZIO
+        ========================= */
+
+        .add {
+            display: grid;
+            grid-template-columns: 1fr 140px 110px;
+            gap: 8px;
+            margin-top: 18px;
+        }
+
+
+        /* =========================
+           INPUT
+        ========================= */
+
+        input,
+        button {
+            min-height: 44px;
+            padding: 11px 13px;
+            border-radius: 10px;
+            font: inherit;
+        }
+
+        input {
+            width: 100%;
+            border: 1px solid #d1d5db;
+            background: #ffffff;
+            color: #111827;
+            outline: none;
+            transition: border-color 0.15s, box-shadow 0.15s;
+        }
+
+        input:focus {
+            border-color: #111827;
+            box-shadow: 0 0 0 3px rgba(17, 24, 39, 0.07);
+        }
+
+
+        /* =========================
+           BOTTONI
+        ========================= */
+
+        button {
+            border: 0;
+            font-weight: 700;
+            cursor: pointer;
+            transition:
+                opacity 0.15s,
+                transform 0.1s;
+        }
+
+        button:hover {
+            opacity: 0.88;
+        }
+
+        button:active {
+            transform: scale(0.98);
+        }
+
+        .primary {
+            background: #111827;
+            color: #ffffff;
+        }
+
+        .save {
+            background: #111827;
+            color: #ffffff;
+        }
+
+        .toggle {
+            background: #f3f4f6;
+            color: #374151;
+            border: 1px solid #e5e7eb;
+        }
+
+        .item.inactive .toggle {
+            background: #ecfdf5;
+            color: #166534;
+            border-color: #bbf7d0;
+        }
+
+
+        /* =========================
+           HEADER LISTA
+        ========================= */
+
+        .list-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 4px;
+        }
+
+        .list-count {
+            padding: 5px 9px;
+            border-radius: 20px;
+            background: #f3f4f6;
+            color: #6b7280;
+            font-size: 12px;
+            white-space: nowrap;
+        }
+
+
+        /* =========================
+           SERVIZI
+        ========================= */
+
+        .item {
+            padding: 18px 0;
+            border-bottom: 1px solid #eeeeee;
+        }
+
+        .item:first-child {
+            padding-top: 14px;
+        }
+
+        .item:last-child {
+            padding-bottom: 0;
+            border-bottom: 0;
+        }
+
+        .item.inactive {
+            opacity: 0.58;
+        }
+
+
+        /* =========================
+           MODIFICA SERVIZIO
+        ========================= */
+
+        .edit {
+            display: grid;
+            grid-template-columns: 1fr 140px 110px;
+            gap: 8px;
+        }
+
+
+        /* =========================
+           RIGA AZIONI
+        ========================= */
+
+        .service-actions {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-top: 9px;
+        }
+
+        .service-actions form {
+            margin: 0;
+        }
+
+        .service-actions button {
+            min-width: 110px;
+        }
+
+
+        /* =========================
+           STATO
+        ========================= */
+
+        .status {
+            font-size: 12px;
+            color: #6b7280;
+        }
+
+        .status.active {
+            color: #15803d;
+            font-weight: 700;
+        }
+
+        .status.inactive {
+            color: #6b7280;
+            font-weight: 700;
+        }
+
+
+        /* =========================
+           LISTINO VUOTO
+        ========================= */
+
+        .empty {
+            padding: 28px 10px 10px;
+            text-align: center;
+            color: #6b7280;
+            font-size: 14px;
+        }
+
+        .empty-icon {
+            margin-bottom: 8px;
+            font-size: 30px;
+        }
+
+
+        /* =========================
+           NAVIGAZIONE
+        ========================= */
+
+        nav {
+            position: fixed;
+            z-index: 100;
+            bottom: 0;
+            left: 0;
+            right: 0;
+
+            display: flex;
+            justify-content: center;
+
+            background: rgba(255, 255, 255, 0.97);
+            border-top: 1px solid #e5e7eb;
+
+            box-shadow: 0 -4px 15px rgba(0, 0, 0, 0.04);
+        }
+
+        .nav {
+            width: 105px;
+            padding: 11px 8px 10px;
+            text-align: center;
+            text-decoration: none;
+            color: #6b7280;
+            font-size: 19px;
+            transition: color 0.15s;
+        }
+
+        .nav span {
+            display: block;
+            margin-top: 3px;
+            font-size: 11px;
+        }
+
+        .nav.active {
+            color: #111827;
+            font-weight: 700;
+        }
+
+        .nav:hover {
+            color: #111827;
+        }
+
+
+        /* =========================
+           MOBILE
+        ========================= */
+
+        @media (max-width: 520px) {
+
+            body {
+                padding-bottom: 76px;
+            }
+
+            .wrap,
+            main {
+                padding: 14px;
+            }
+
+            .card {
+                padding: 18px;
+                border-radius: 18px;
+            }
+
+            h1 {
+                font-size: 22px;
+            }
+
+            .add {
+                grid-template-columns: 1fr;
+            }
+
+            .edit {
+                grid-template-columns: 1fr 110px;
+            }
+
+            .edit button {
+                grid-column: 1 / -1;
+            }
+
+            .nav {
+                flex: 1;
+                width: auto;
+            }
+        }
+
+
+        @media (max-width: 360px) {
+
+            .edit {
+                grid-template-columns: 1fr;
+            }
+
+            .edit button {
+                grid-column: auto;
+            }
+
+            .service-actions {
+                align-items: flex-start;
+            }
+
+            .service-actions button {
+                min-width: 100px;
+            }
+        }
+
+    </style>
+
+</head>
+
+
+<body>
+
+
+<!-- =========================
+     HEADER
+========================= -->
+
+<header>
+
+    <div class="wrap">
+
+        <div class="logo">
+            ✂️ Barber Manager
+        </div>
+
+        <div class="sub">
+            Gestione listino
+        </div>
+
+    </div>
+
+</header>
+
+
+
+<main>
+
+
+    <!-- =========================
+         AGGIUNGI SERVIZIO
+    ========================= -->
+
+    <section class="card">
+
+        <h1>
+            Listino prezzi
+        </h1>
+
+        <p class="desc">
+            Gestisci i servizi disponibili e i relativi prezzi.
+        </p>
+
+
+        <form
+            action="/listino/aggiungi"
+            method="post"
+            class="add"
+        >
+
+            <input
+                name="nome"
+                type="text"
+                placeholder="Nome servizio"
+                autocomplete="off"
+                required
+            >
+
+            <input
+                name="prezzo"
+                type="number"
+                min="0"
+                step="0.01"
+                placeholder="Prezzo €"
+                inputmode="decimal"
+                required
+            >
+
+            <button
+                type="submit"
+                class="primary"
+            >
+                + Aggiungi
+            </button>
+
+        </form>
+
+    </section>
+
+
+
+    <!-- =========================
+         ELENCO SERVIZI
+    ========================= -->
+
+    <section class="card">
+
+
+        <div class="list-header">
+
+            <h2>
+                Servizi
+            </h2>
+
+            <div class="list-count">
+
+                {{ servizi|length }}
+
+                {% if servizi|length == 1 %}
+                    servizio
+                {% else %}
+                    servizi
+                {% endif %}
+
+            </div>
+
+        </div>
+
+
+
+        {% if servizi %}
+
+
+            {% for s in servizi %}
+
+
+                <div class="item{% if not s['attivo'] %} inactive{% endif %}">
+
+
+                    <!-- MODIFICA -->
+
+                    <form
+                        class="edit"
+                        action="/listino/{{ s['id'] }}/modifica"
+                        method="post"
+                    >
+
+                        <input
+                            name="nome"
+                            type="text"
+                            value="{{ s['nome'] }}"
+                            required
+                        >
+
+                        <input
+                            name="prezzo"
+                            type="number"
+                            step="0.01"
+                            min="0"
+                            value="{{ '%.2f'|format(s['prezzo']) }}"
+                            inputmode="decimal"
+                            required
+                        >
+
+                        <button
+                            type="submit"
+                            class="save"
+                        >
+                            Salva
+                        </button>
+
+                    </form>
+
+
+
+                    <!-- STATO + DISATTIVA -->
+
+                    <div class="service-actions">
+
+
+                        <div class="status {% if s['attivo'] %}active{% else %}inactive{% endif %}">
+
+                            {% if s['attivo'] %}
+
+                                ● Attivo
+
+                            {% else %}
+
+                                ○ Non attivo
+
+                            {% endif %}
+
+                        </div>
+
+
+
+                        <form
+                            action="/listino/{{ s['id'] }}/toggle"
+                            method="post"
+                        >
+
+                            <button
+                                type="submit"
+                                class="toggle"
+                            >
+
+                                {% if s['attivo'] %}
+
+                                    Disattiva
+
+                                {% else %}
+
+                                    Riattiva
+
+                                {% endif %}
+
+                            </button>
+
+                        </form>
+
+                    </div>
+
+
+                </div>
+
+
+            {% endfor %}
+
+
+        {% else %}
+
+
+            <div class="empty">
+
+                <div class="empty-icon">
+                    ✂️
+                </div>
+
+                <div>
+                    Nessun servizio presente nel listino.
+                </div>
+
+                <div style="margin-top:6px;">
+                    Aggiungi il primo servizio utilizzando il modulo sopra.
+                </div>
+
+            </div>
+
+
+        {% endif %}
+
+
+    </section>
+
+
+</main>
+
+
+
+<!-- =========================
+     NAVIGAZIONE
+========================= -->
+
+<nav>
+
+
+    <a
+        class="nav"
+        href="/"
+    >
+        🏠
+        <span>Home</span>
+    </a>
+
+
+    <a
+        class="nav"
+        href="/storico"
+    >
+        📊
+        <span>Storico</span>
+    </a>
+
+
+    <a
+        class="nav active"
+        href="/listino"
+    >
+        ✂️
+        <span>Listino</span>
+    </a>
+
+
+    <a
+        class="nav"
+        href="/staff"
+    >
+        👤
+        <span>Staff</span>
+    </a>
+
+
+</nav>
+
+
+</body>
+
+</html>

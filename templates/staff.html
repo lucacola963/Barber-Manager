@@ -1,0 +1,739 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <title>Staff - Barber Manager</title>
+
+    <style>
+
+        * {
+            box-sizing: border-box;
+        }
+
+        html,
+        body {
+            margin: 0;
+            padding: 0;
+            background: #f3f4f6;
+            color: #111827;
+            font-family:
+                -apple-system,
+                BlinkMacSystemFont,
+                "Segoe UI",
+                Roboto,
+                Arial,
+                sans-serif;
+        }
+
+        body {
+            padding-bottom: 90px;
+        }
+
+        .topbar {
+            background: #111827;
+            color: white;
+            padding: 22px 18px 20px;
+        }
+
+        .topbar-inner {
+            max-width: 760px;
+            margin: 0 auto;
+        }
+
+        .title {
+            margin: 0;
+            font-size: 24px;
+            font-weight: 700;
+            letter-spacing: -0.3px;
+        }
+
+        .subtitle {
+            margin-top: 4px;
+            color: #9ca3af;
+            font-size: 14px;
+        }
+
+        .container {
+            width: 100%;
+            max-width: 760px;
+            margin: 0 auto;
+            padding: 18px 14px 30px;
+        }
+
+        .card {
+            background: white;
+            border-radius: 18px;
+            padding: 18px;
+            margin-bottom: 14px;
+            box-shadow:
+                0 1px 2px rgba(0, 0, 0, 0.04),
+                0 4px 14px rgba(0, 0, 0, 0.04);
+        }
+
+        .card-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 12px;
+            margin-bottom: 16px;
+        }
+
+        .card-title {
+            margin: 0;
+            font-size: 17px;
+            font-weight: 700;
+        }
+
+        .count {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            min-width: 30px;
+            height: 28px;
+            padding: 0 9px;
+            border-radius: 999px;
+            background: #f3f4f6;
+            color: #4b5563;
+            font-size: 13px;
+            font-weight: 700;
+        }
+
+        .form-row {
+            display: flex;
+            gap: 10px;
+        }
+
+        .input {
+            flex: 1;
+            min-width: 0;
+            height: 46px;
+            padding: 0 13px;
+            border: 1px solid #d1d5db;
+            border-radius: 12px;
+            background: white;
+            color: #111827;
+            font-size: 15px;
+            outline: none;
+        }
+
+        .input:focus {
+            border-color: #6b7280;
+            box-shadow: 0 0 0 3px rgba(107, 114, 128, 0.10);
+        }
+
+        button {
+            font-family: inherit;
+        }
+
+        .btn {
+            border: 0;
+            border-radius: 12px;
+            min-height: 46px;
+            padding: 0 16px;
+            font-size: 14px;
+            font-weight: 700;
+            cursor: pointer;
+            transition:
+                transform 0.08s ease,
+                opacity 0.15s ease;
+        }
+
+        .btn:active {
+            transform: scale(0.98);
+        }
+
+        .btn-primary {
+            background: #111827;
+            color: white;
+        }
+
+        .btn-primary:hover {
+            opacity: 0.92;
+        }
+
+        .btn-backup {
+            width: 100%;
+            background: #111827;
+            color: white;
+            min-height: 50px;
+            font-size: 15px;
+        }
+
+        .btn-backup:hover {
+            opacity: 0.92;
+        }
+
+        .backup-description {
+            margin: -4px 0 14px;
+            color: #6b7280;
+            font-size: 13px;
+            line-height: 1.45;
+        }
+
+        .message {
+            border-radius: 12px;
+            padding: 13px 14px;
+            margin-bottom: 14px;
+            font-size: 14px;
+            font-weight: 600;
+        }
+
+        .message-success {
+            background: #ecfdf5;
+            color: #047857;
+            border: 1px solid #a7f3d0;
+        }
+
+        .message-error {
+            background: #fef2f2;
+            color: #b91c1c;
+            border: 1px solid #fecaca;
+        }
+
+        .staff-list {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .staff-item {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 13px;
+            border: 1px solid #e5e7eb;
+            border-radius: 14px;
+            background: #ffffff;
+        }
+
+        .staff-item.inactive {
+            background: #f9fafb;
+        }
+
+        .staff-main {
+            flex: 1;
+            min-width: 0;
+        }
+
+        .staff-name {
+            width: 100%;
+            height: 42px;
+            padding: 0 11px;
+            border: 1px solid transparent;
+            border-radius: 10px;
+            background: transparent;
+            color: #111827;
+            font-size: 15px;
+            font-weight: 600;
+            outline: none;
+        }
+
+        .staff-name:focus {
+            border-color: #d1d5db;
+            background: white;
+        }
+
+        .status {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            margin-top: 4px;
+            padding-left: 11px;
+            color: #6b7280;
+            font-size: 12px;
+        }
+
+        .status-dot {
+            width: 7px;
+            height: 7px;
+            border-radius: 50%;
+            background: #10b981;
+        }
+
+        .status.inactive {
+            color: #9ca3af;
+        }
+
+        .status.inactive .status-dot {
+            background: #9ca3af;
+        }
+
+        .actions {
+            display: flex;
+            align-items: center;
+            gap: 7px;
+        }
+
+        .btn-small {
+            min-height: 40px;
+            padding: 0 11px;
+            border-radius: 10px;
+            font-size: 12px;
+        }
+
+        .btn-save {
+            background: #111827;
+            color: white;
+        }
+
+        .btn-disable {
+            background: #f3f4f6;
+            color: #374151;
+        }
+
+        .btn-enable {
+            background: #ecfdf5;
+            color: #047857;
+        }
+
+        .empty {
+            padding: 24px 12px;
+            text-align: center;
+            color: #6b7280;
+            font-size: 14px;
+        }
+
+        .bottom-nav {
+            position: fixed;
+            z-index: 100;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(255, 255, 255, 0.97);
+            border-top: 1px solid #e5e7eb;
+            box-shadow: 0 -4px 18px rgba(0, 0, 0, 0.05);
+        }
+
+        .bottom-nav-inner {
+            max-width: 760px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+        }
+
+        .nav-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            min-height: 68px;
+            gap: 4px;
+            color: #6b7280;
+            text-decoration: none;
+            font-size: 11px;
+            font-weight: 600;
+        }
+
+        .nav-item span:first-child {
+            font-size: 20px;
+            line-height: 1;
+        }
+
+        .nav-item.active {
+            color: #111827;
+        }
+
+        @media (max-width: 560px) {
+
+            .container {
+                padding-left: 10px;
+                padding-right: 10px;
+            }
+
+            .card {
+                padding: 15px;
+                border-radius: 16px;
+            }
+
+            .form-row {
+                flex-direction: column;
+            }
+
+            .form-row .btn {
+                width: 100%;
+            }
+
+            .staff-item {
+                align-items: stretch;
+                flex-direction: column;
+            }
+
+            .actions {
+                display: grid;
+                grid-template-columns: 1fr 1fr;
+            }
+
+            .btn-small {
+                width: 100%;
+            }
+        }
+
+    </style>
+</head>
+
+<body>
+
+    <!-- ================================================= -->
+    <!-- HEADER -->
+    <!-- ================================================= -->
+
+    <header class="topbar">
+
+        <div class="topbar-inner">
+
+            <h1 class="title">
+                Staff
+            </h1>
+
+            <div class="subtitle">
+                Gestione collaboratori
+            </div>
+
+        </div>
+
+    </header>
+
+
+    <!-- ================================================= -->
+    <!-- CONTENUTO -->
+    <!-- ================================================= -->
+
+    <main class="container">
+
+
+        <!-- ================================================= -->
+        <!-- MESSAGGI BACKUP -->
+        <!-- ================================================= -->
+
+        {% if request.args.get('backup') == 'ok' %}
+
+            <div
+                class="message message-success"
+                id="backupMessage"
+            >
+                ✓ Backup completato correttamente.
+            </div>
+
+        {% elif request.args.get('backup') == 'errore' %}
+
+            <div
+                class="message message-error"
+                id="backupMessage"
+            >
+                ✕ Impossibile creare il backup.
+            </div>
+
+        {% endif %}
+
+
+        <!-- ================================================= -->
+        <!-- BACKUP -->
+        <!-- ================================================= -->
+
+        <section class="card">
+
+            <div class="card-header">
+
+                <h2 class="card-title">
+                    Backup dati
+                </h2>
+
+            </div>
+
+            <p class="backup-description">
+                Crea una copia di sicurezza del database.
+                I backup vengono conservati automaticamente
+                nella cartella dell'app.
+            </p>
+
+            <form
+                action="/backup"
+                method="post"
+            >
+
+                <button
+                    type="submit"
+                    class="btn btn-backup"
+                >
+                    💾 Crea backup
+                </button>
+
+            </form>
+
+        </section>
+
+
+        <!-- ================================================= -->
+        <!-- AGGIUNGI COLLABORATORE -->
+        <!-- ================================================= -->
+
+        <section class="card">
+
+            <div class="card-header">
+
+                <h2 class="card-title">
+                    Aggiungi collaboratore
+                </h2>
+
+            </div>
+
+            <form
+                action="/staff/aggiungi"
+                method="post"
+            >
+
+                <div class="form-row">
+
+                    <input
+                        type="text"
+                        name="nome"
+                        class="input"
+                        placeholder="Nome collaboratore"
+                        autocomplete="off"
+                        required
+                    >
+
+                    <button
+                        type="submit"
+                        class="btn btn-primary"
+                    >
+                        + Aggiungi
+                    </button>
+
+                </div>
+
+            </form>
+
+        </section>
+
+
+        <!-- ================================================= -->
+        <!-- ELENCO STAFF -->
+        <!-- ================================================= -->
+
+        <section class="card">
+
+            <div class="card-header">
+
+                <h2 class="card-title">
+                    Collaboratori
+                </h2>
+
+                <div class="count">
+                    {{ collaboratori|length }}
+                </div>
+
+            </div>
+
+
+            {% if collaboratori %}
+
+                <div class="staff-list">
+
+                    {% for c in collaboratori %}
+
+                        <div
+                            class="staff-item {% if not c['attivo'] %}inactive{% endif %}"
+                        >
+
+                            <div class="staff-main">
+
+                                <form
+                                    action="/staff/{{ c['id'] }}/modifica"
+                                    method="post"
+                                >
+
+                                    <input
+                                        type="text"
+                                        name="nome"
+                                        value="{{ c['nome'] }}"
+                                        class="staff-name"
+                                        required
+                                    >
+
+                                    <div
+                                        class="status {% if not c['attivo'] %}inactive{% endif %}"
+                                    >
+
+                                        <span class="status-dot"></span>
+
+                                        {% if c['attivo'] %}
+                                            Attivo
+                                        {% else %}
+                                            Disattivato
+                                        {% endif %}
+
+                                    </div>
+
+                                </form>
+
+                            </div>
+
+
+                            <div class="actions">
+
+                                <!-- SALVA -->
+
+                                <form
+                                    action="/staff/{{ c['id'] }}/modifica"
+                                    method="post"
+                                >
+
+                                    <input
+                                        type="hidden"
+                                        name="nome"
+                                        value="{{ c['nome'] }}"
+                                    >
+
+                                    <button
+                                        type="submit"
+                                        class="btn btn-small btn-save"
+                                    >
+                                        Salva
+                                    </button>
+
+                                </form>
+
+
+                                <!-- ATTIVA / DISATTIVA -->
+
+                                <form
+                                    action="/staff/{{ c['id'] }}/toggle"
+                                    method="post"
+                                >
+
+                                    {% if c['attivo'] %}
+
+                                        <button
+                                            type="submit"
+                                            class="btn btn-small btn-disable"
+                                        >
+                                            Disattiva
+                                        </button>
+
+                                    {% else %}
+
+                                        <button
+                                            type="submit"
+                                            class="btn btn-small btn-enable"
+                                        >
+                                            Riattiva
+                                        </button>
+
+                                    {% endif %}
+
+                                </form>
+
+                            </div>
+
+                        </div>
+
+                    {% endfor %}
+
+                </div>
+
+            {% else %}
+
+                <div class="empty">
+                    Nessun collaboratore presente.
+                </div>
+
+            {% endif %}
+
+        </section>
+
+    </main>
+
+
+    <!-- ================================================= -->
+    <!-- NAVIGAZIONE -->
+    <!-- ================================================= -->
+
+    <nav class="bottom-nav">
+
+        <div class="bottom-nav-inner">
+
+            <a
+                href="/"
+                class="nav-item"
+            >
+                <span>⌂</span>
+                <span>Home</span>
+            </a>
+
+            <a
+                href="/storico"
+                class="nav-item"
+            >
+                <span>▤</span>
+                <span>Report</span>
+            </a>
+
+            <a
+                href="/listino"
+                class="nav-item"
+            >
+                <span>€</span>
+                <span>Listino</span>
+            </a>
+
+            <a
+                href="/staff"
+                class="nav-item active"
+            >
+                <span>♟</span>
+                <span>Staff</span>
+            </a>
+
+        </div>
+
+    </nav>
+
+
+    <!-- ================================================= -->
+    <!-- JS -->
+    <!-- ================================================= -->
+
+    <script>
+
+        /*
+         * Nasconde automaticamente il messaggio
+         * del backup dopo alcuni secondi.
+         */
+
+        const backupMessage =
+            document.getElementById("backupMessage");
+
+        if (backupMessage) {
+
+            setTimeout(
+                function () {
+
+                    backupMessage.style.transition =
+                        "opacity 0.3s ease";
+
+                    backupMessage.style.opacity = "0";
+
+                    setTimeout(
+                        function () {
+
+                            backupMessage.remove();
+
+                        },
+                        300
+                    );
+
+                },
+                4000
+            );
+        }
+
+    </script>
+
+</body>
+</html>
